@@ -10,7 +10,8 @@
 ## Run migrations
     php artisan migrate
 
-## Run npm run dev
+## Run npm
+    npm install
     npm run dev
     
 ## Run Seed
