@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PhotoController;
+use App\Models\Photo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +24,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Upload Photo
+Route::get('/upload', [PhotoController::class, 'create']);
+Route::post('/store', [PhotoController::class, 'store']);
+Route::get('/edit/{id}', [PhotoController::class, 'edit']);
+Route::post('/update/{id}', [PhotoController::class, 'update']);
+Route::get('/delete/{id}', [PhotoController::class, 'delete']);
+
+//Catalog
+Route::post('/catalog', [HomeController::class, 'catalog']);
+Route::get('/editcat/{id}', [HomeController::class, 'editcat']);
+Route::post('/updatecat/{id}', [HomeController::class, 'updatecat']);
+Route::get('/deletecat/{id}', [HomeController::class, 'deletecat']);
