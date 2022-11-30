@@ -27,7 +27,11 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Dlsplay</div>
+
                     <div class="card-body">
+                        <div style="margin-bottom: 25px">
+                            <h3>ขนาดรูปรวมทั้งหมด {{ $sum }}</h3>
+                        </div>
                         <div class="row">
                             @foreach ($view as $display)
                                 <div class="col-lg-4 mb-3 d-flex align-items-stretch">

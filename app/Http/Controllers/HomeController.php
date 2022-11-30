@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Catalog;
 use App\Models\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -25,12 +26,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $view = Photo::all();
-        $photo = Catalog::all();
+        $username = Auth::user()->name;
+        $view = Photo::where('user_create', '=', $username)->orderBy('type')->get();
+        $photo = Catalog::where('user_create', '=', $username)->get();
         return view('home', compact('view', 'photo'));
     }
     public function catalog(Request $request)
     {
+        $username = Auth::user()->name;
         $title = $request->title;
         $img = $request->images;
 
@@ -42,6 +45,7 @@ class HomeController extends Controller
         $catalog = new Catalog();
         $catalog->title = $title;
         $catalog->images = $photo;
+        $catalog->user_create = $username;
         $catalog->save();
         return redirect()->back()->with('sucess', 'สร้างสำเร็จ');
     }

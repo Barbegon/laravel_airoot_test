@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PhotoController extends Controller
 {
     public function create()
     {
-        $view = Photo::all();
-        return view('upload', compact('view'));
+        $username = Auth::user()->name;
+        $sum = Photo::where('user_create', '=', $username)->sum('size');
+        $view = Photo::where('user_create', '=', $username)->orderBy('type')->get();
+        return view('upload', compact('view', 'sum'));
     }
     public function store(Request $request)
     {
+        $username = Auth::user()->name;
         $name = $request->file('photo')->getClientOriginalName();
         $mime = $request->file('photo')->getMimeType();
         $size = $request->file('photo')->getSize();
@@ -23,6 +27,7 @@ class PhotoController extends Controller
         $photo->name = $name;
         $photo->type = $mime;
         $photo->size = $size;
+        $photo->user_create = $username;
         $photo->save();
         return redirect()->back()->with('sucess', 'อัพโหลดสำเร็จ');
     }
@@ -33,6 +38,7 @@ class PhotoController extends Controller
     }
     public function update(Request $request, $id)
     {
+
         $name = $request->file('photo')->getClientOriginalName();
         $mime = $request->file('photo')->getMimeType();
         $size = $request->file('photo')->getSize();
